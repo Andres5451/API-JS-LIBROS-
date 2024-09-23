@@ -32,6 +32,16 @@ app.get("/", (req, res) => {
     res.send("Bienvenidos a la app de libros");
 })
 
+app.use((req, res, next) => {
+
+    const authToken = req.headers["authorization"];
+    if (authToken === "miTokenSecreto123") {
+    next();
+    } else {
+    res.status(401).send("Acceso no autorizado");
+    }
+});
+
 app.post("/libros", async (req, res) => {
     const libro = new Libro({
     titulo: req.body.titulo,
